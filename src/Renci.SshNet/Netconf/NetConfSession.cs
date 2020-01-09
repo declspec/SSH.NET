@@ -44,6 +44,9 @@ namespace Renci.SshNet.NetConf
                                                         "<capability>" +
                                                             "urn:ietf:params:netconf:base:1.0" +
                                                         "</capability>" +
+                                                        "<capability>" +
+                                                            "urn:ietf:params:netconf:base:1.1" +
+                                                        "</capability>" +
                                                     "</capabilities>" +
                                                 "</hello>");
 
