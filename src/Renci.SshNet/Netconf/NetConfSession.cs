@@ -5,6 +5,7 @@ using System.Threading;
 using Renci.SshNet.Common;
 using System.Xml;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace Renci.SshNet.NetConf
 {
@@ -43,9 +44,6 @@ namespace Renci.SshNet.NetConf
                                                     "<capabilities>" +
                                                         "<capability>" +
                                                             "urn:ietf:params:netconf:base:1.0" +
-                                                        "</capability>" +
-                                                        "<capability>" +
-                                                            "urn:ietf:params:netconf:base:1.1" +
                                                         "</capability>" +
                                                     "</capabilities>" +
                                                 "</hello>");
@@ -134,7 +132,10 @@ namespace Renci.SshNet.NetConf
                 var nsMgr = new XmlNamespaceManager(ServerCapabilities.NameTable);
                 nsMgr.AddNamespace("nc", "urn:ietf:params:xml:ns:netconf:base:1.0");
 
-                _usingFramingProtocol = (ServerCapabilities.SelectSingleNode("/nc:hello/nc:capabilities/nc:capability[text()='urn:ietf:params:netconf:base:1.1']", nsMgr) != null);
+                var xpath = "/nc:hello/nc:capabilities/nc:capability[text()='urn:ietf:params:netconf:base:1.1']";
+
+                _usingFramingProtocol = ServerCapabilities.SelectSingleNode(xpath, nsMgr) != null
+                    && ClientCapabilities.SelectSingleNode(xpath, nsMgr) != null;
 
                 _serverCapabilitiesConfirmed.Set();
             }
